@@ -1,0 +1,20 @@
+body {	font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+li p { margin: 0; }			
+a:hover{ color:red; }
+
+/* color coding */
+.usw-dendro-record { background-color: #EBF1DE }
+.usw-dendro-object { background-color: #DBEEF4 }
+.usw-dendro-sample { background-color: #F2DCDB }
+.aat{ background-color: ButtonFace; padding: 2px; }
+.aat:after {content: " (AAT)"}
+
+.highlight { background-color: whitesmoke }
+.header {
+    background-image: url('../img/header.jpg');
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.footer {text-align: center;}

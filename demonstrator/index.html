@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic Page Needs -->
+    <meta charset="utf-8">
+    <title>ARIADNE data integration case study</title>
+    <meta name="description" content="ARIADNE data integration case study - query builder">
+    <meta name="author" content="Ceri Binding, University of South Wales, ceri.binding@southwales.ac.uk">
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon -->
+    <link rel="Shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+
+    <!-- CDN CSS -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/dendro.css">
+
+    <!-- CDN scripts -->
+    <!--<script src="//code.jquery.com/jquery-3.1.1.min.js"></script>-->
+    <!-- Local scripts -->
+    <script src="./lib/jquery-3.1.1.min.js"></script>
+    <script src="./lib/jquery-ui.min.js"></script>
+
+    <!--local composite (minified) script for deployment-->
+    <script src="./lib/usw.dendro.20170131-min.js"></script>
+
+    <!--local separate (unminified) scripts for testing-->
+    <!--<script src="./src/jquery.blockUI.js"></script>
+
+    <script src="./src/usw.uri.js"></script>
+    <script src="./src/fn.sparqlquery.js"></script>
+    <script src="./src/fn.gethashcode.js"></script>
+
+    <script src="./src/usw.basecontrol.js"></script>
+    <script src="./src/usw.resourcelist.js"></script>
+    <script src="./src/usw.yearspanselect.js"></script>
+    <script src="./src/usw.objectmaterialslist.js"></script>
+    <script src="./src/usw.objecttypeslist.js"></script>
+
+    <script src="./src/usw.textinputfield.js"></script>
+    <script src="./src/usw.querytermsuggest.js"></script>
+    <script src="./src/usw.querytermselect.js"></script>
+
+    <script src="./src/usw.dendrorecordquery.js"></script>
+    <script src="./src/usw.dendroobjecttype.js"></script>
+    <script src="./src/usw.dendroobjectmaterial.js"></script>
+    <script src="./src/usw.dendroobjectquery.js"></script>
+    <script src="./src/usw.dendrosamplequery.js"></script>
+    <script src="./src/usw.dendroqueryrunner.js"></script>
+    <script src="./src/usw.resourceproperties.js"></script>-->
+   
+    <script type="text/javascript">
+
+        (function ($) { // start of main jquery closure
+            "use strict"; // strict	mode pragma
+
+            // Set up query builder tab controls
+            $(document).ready(function () {
+                
+                $("#rq").dendrorecordquery({
+                    showheader: false,
+                    showcontent: true,
+                    collapsible: false,
+                    showfooter: false
+                });
+                $("#oq").dendroobjectquery({
+                    showheader: false,
+                    showcontent: true,
+                    collapsible: false,
+                    showfooter: false
+                });
+                $("#sq").dendrosamplequery({
+                    showheader: false,
+                    showcontent: true,
+                    collapsible: false,
+                    showfooter: false
+                });
+
+
+                $("#queryResults").dendroqueryrunner({ "showheader": false });
+                $("#resultProperties").resourceproperties({ "showheader": false });
+                //$("#querytermsuggest").querytermsuggest({ headertext: "Term suggester" });
+                //$("#objectmaterialslist").objectmaterialslist();
+                //$("#objecttypeslist").objecttypeslist();
+                $("#sparql").css({ "white-space": "pre-line", "display": "none" });
+
+                // when run button is clicked, run query and show queryResults tab
+                $("input#run").button().click(function () {
+                    var sparql = "";
+                    var active = $("#queries").tabs("option", "active");
+                    switch (active) {
+                        case 0:
+                            sparql = $("#rq").dendrorecordquery("getSparqlQuery");
+                            break;
+                        case 1:
+                            sparql = $("#oq").dendroobjectquery("getSparqlQuery");
+                            break;
+                        case 2:
+                            sparql = $("#sq").dendrosamplequery("getSparqlQuery");
+                            break;
+                    }
+                    //var sparql = $("#queryBuilder").dendroquerybuilder("getSparqlQuery");
+
+                    $("#sparql").text(sparql);
+                    //run query and render results
+                    $("#queryResults").dendroqueryrunner("option", "query", sparql);
+                    $("#results").tabs("option", "active", 0);
+                });
+
+                // when a result is clicked, switch to resultProperties tab
+                $("#queryResults").dendroqueryrunner().on("selected", function (e, data) {
+                    //alert(data.uri);
+                    $("#resultProperties").resourceproperties("option", "uri", data.uri);
+                    $("#results").tabs("option", "active", 1);
+                    return false;
+                });
+
+                $("#resultProperties").resourceproperties().on("selected", function (e, data) {
+                    $("#resultProperties").resourceproperties("option", "uri", data.uri);
+                    return false;
+                });
+
+                $("#queries").css({ "height": "570px" }).tabs();
+                $("#results").css({ "height": "570px" }).tabs();
+
+                // $("#tabs2").tabs();
+
+            }); // end of $(document).ready
+
+            // debugger; // adding this breaks into the debugger at this point
+
+        })(jQuery); // end of main jquery closure
+    </script>
+
+
+
+</head>
+<body>
+
+    <div class="container">
+        <!-- .container is main centered wrapper -->
+        <!--header-->
+        <section class="header">
+            <a target="_blank" href="http://www.ariadne-infrastructure.eu/"><img src="img/ariadne-logo-350x87.png" alt="ARIADNE"></a>
+        </section>
+
+        <!--content-->
+        <div class="row">
+            <h4>Data integration case study - query builder</h4>
+        </div>
+
+        <div class="row">
+            <!--query builder-->
+            <div class="one-third column" id="queries">
+                <ul>
+                    <li><a href="#rq">Record</a></li>
+                    <li><a href="#oq">Object</a></li>
+                    <li><a href="#sq">Sample</a></li>
+                </ul>
+                <div class='usw-dendro-record' id="rq"></div>
+                <div class='usw-dendro-object' id="oq"></div>
+                <div class='usw-dendro-sample' id="sq"></div>
+                <input type="submit" id="run" value="Run" />
+            </div>
+
+            <!--results tabs-->
+            <div class="two-thirds column" id="results">
+                <ul>
+                    <li><a href="#queryResults">Results</a></li>
+                    <li><a href="#resultProperties">Properties</a></li>
+                </ul>
+                <div id="queryResults"></div>
+                <div id="resultProperties"></div>
+            </div>
+        </div><!--end row-->
+
+        <div class="row">
+            <div id="sparql"></div>
+        </div>
+
+        <!--<div class="row">
+
+            <div id="tabs2">
+                <ul>
+                    <li><a href="#objectmaterialslist">Object Materials</a></li>
+                    <li><a href="#objecttypeslist">Object Types</a></li>
+                </ul>
+                <div id="objectmaterialslist"></div>
+                <div id="objecttypeslist"></div>
+            </div>
+
+        </div>-->
+
+        <section class="footer">
+            <!--footer-->
+            <small>
+                <a target="_blank" href="http://hypermedia.research.southwales.ac.uk/">University of South Wales - Hypermedia Research Group</a>, 2017<br />
+                <a target="_blank" href="http://www.ariadne-infrastructure.eu/">ARIADNE</a> is funded by the <a target="_blank" href="http://ec.europa.eu/research/fp7/index_en.cfm">European Commission's 7th Framework Programme</a>
+            </small>
+        </section>
+
+    </div> <!-- End of .container -->
+
+</body>
+</html>
