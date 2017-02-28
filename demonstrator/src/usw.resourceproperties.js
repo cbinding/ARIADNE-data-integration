@@ -44,7 +44,7 @@ History : 26/01/2016 CFB Initially created script
         _setOption: function (key, value) {
             var self = this;
             if (key == "uri" && value !== self.options.uri) {
-                var sparql = "SELECT DISTINCT ?predicate ?plabel ?object ?olabel ?otype WHERE { \n";
+                var sparql = "SELECT DISTINCT ?predicate ?plabel ?object ?olabel WHERE { \n";
                 sparql += "<" + value + "> ?predicate ?object . \n";
                 // sparql += " OPTIONAL { ?object skos:prefLabel ?skos_olabel. FILTER(langMatches(lang(?skos_olabel), \"" + self.options.language + "\") || lang(?skos_olabel)='') }\n";
                 // sparql += " OPTIONAL { ?object gvp:prefLabelGVP [gvp:term ?gvp_olabel] . FILTER(langMatches(lang(?gvp_olabel), \"" + self.options.language + "\") || lang(?gvp_olabel)='') }\n";
@@ -73,14 +73,100 @@ History : 26/01/2016 CFB Initially created script
         render: function (data) {
             var self = this;
 
+            // if data is not as expected, no point going further
             if (!data || !data.results || !data.results.bindings)
                 return;
             
-            // TODO - cluster and sort multiple objects under predicates for more sensible display...
+            // New 24/01/2017 - suppress potential duplicate properties, and highlight AAT concepts
+            // put the 'raw' results data into a hash structure to eliminate any possible duplicates
+            // e.g. properties[uri].values[uri].label
+            var properties = {};
 
-            // display the data
+            $(data.results.bindings).each(function (index, item) {                    
+                
+                // key is property URI - if key does not already exist add it
+                var pID = item.predicate.value.trim();
+                if (!properties.hasOwnProperty(pID)) {
+                    properties[pID] = { label: pID, values: { } };
+                }
+                
+                // if we actually have a predicate label present then substitute it
+                if (item.plabel && item.plabel.value && item.plabel.value.trim() !== "") {
+                    properties[pID].label = item.plabel.value.trim();
+                }
+                else {
+                    // otherwise parse fragment part of URI (if possible) to use as label
+                    var i = Math.max(pID.lastIndexOf("#"), pID.lastIndexOf("/"));
+                    if (i > -1 && i < pID.length - 1)
+                        properties[pID].label = pID.substring(i + 1);
+                }
+
+                // value of property
+                var vID = item.object.value.trim();
+                if (item.object.type === "literal") {
+                    vID = vID.toLowerCase();
+                }
+                // if key does not already exist add it
+                if (!properties[pID].values.hasOwnProperty(vID)) {
+                    properties[pID].values[vID] = { label: item.object.value.trim() , isURI: (item.object.type === "uri") };
+                }
+
+                // if we actually have an object label present then substitute it
+                if (item.olabel && item.olabel.value && item.olabel.value.trim() !== "") {
+                    properties[pID].values[vID].label = item.olabel.value.trim();
+                }
+                else if (item.object.type === "uri") {
+                    // otherwise parse fragment part of URI (if possible) to use as label
+                    var i = Math.max(vID.lastIndexOf("#"), vID.lastIndexOf("/"));
+                    if (i > -1 && i < vID.length - 1)
+                        properties[pID].values[vID].label = vID.substring(i + 1);
+                }
+
+
+            });
+
+            // finally, display the properties
             var list = $("ul:first", self.content).empty();
-            //var hash = {};
+
+            for (var pID in properties) {
+                if (properties.hasOwnProperty(pID)) {
+                    var li = $("<li/>").appendTo(list);
+                    $("<span><a href='" + pID + "'>" + properties[pID].label + "</a>&nbsp;:</span>")
+                        .css({
+                            "font-weight": "bold",
+                            "margin-right": "5px"
+                        })
+                        .appendTo(li);
+
+                    for (var vID in properties[pID].values) {
+                        if (properties[pID].values.hasOwnProperty(vID)) {
+
+                            var container = $("<span/>").css({ "margin-right": "5px" }).appendTo(li);
+
+                            // if it's a uri, display contents as a labelled anchor
+                            if (properties[pID].values[vID].isURI) {
+                                $("<a/>")
+                                    .attr("href", vID)
+                                    // if it's an AAT concept, give it 'aat' class so CSS can style it differently
+                                    .addClass(/^(https?:\/\/vocab\.getty\.edu\/aat\/\d{9}$)/.test(vID) ? "aat" : "")
+                                    .text(properties[pID].values[vID].label)
+                                    .appendTo(container);
+                            }
+                            else {
+                                // otherwise just display as text
+                                $(container).text(properties[pID].values[vID].label);                                    
+                            }
+                            
+                        }
+                    }                    
+                }
+            }                   
+            
+            // end new 24/01/2017
+
+            // display the data (old version)
+            /*
+            var list = $("ul:first", self.content).empty();            
 
             $(data.results.bindings).each(function (index, item) {
                 var predicate = "";
@@ -134,8 +220,8 @@ History : 26/01/2016 CFB Initially created script
                     $("<span><a href='" + item.object.value + "'>" + olabel + "</a></span>").appendTo(li);
                 else
                     $("<span>" + olabel + "</span>").appendTo(li);                
-            });
-        }        
+            });*/
+        } // end 'render'        
 
     });	// end usw.resourceproperties
 

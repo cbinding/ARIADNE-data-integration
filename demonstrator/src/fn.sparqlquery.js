@@ -16,8 +16,12 @@ History : 02/02/2016 CFB Initially created script
 
 	$.fn.sparqlquery = function(options) {
 	    var defaults = {
+            // using DYDRA server:
+			//endpointURI: "http://dydra.com/cbinding/dendro/sparql",
+	        //authToken: "yC9uXSCkT5NsYA28rWtA",
             // using (local) OpenLink Virtuoso server:
-	        endpointURI: "http://localhost:8890/sparql",
+	        //endpointURI: "http://localhost:8890/sparql",
+	        endpointURI: "http://ariadne-lod.isti.cnr.it:8890/sparql",
 	        // restrict queries to specific set of named graphs - comment out to query all 
             // change to suit deployment named graph URIs
 	        namedGraphs: ["http://registry.ariadne-infrastructure.eu/usw-data-integration-case-study", "http://vocab.getty.edu/dataset/aat"],

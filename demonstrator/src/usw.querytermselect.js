@@ -39,7 +39,7 @@ History
             $(self.element).addClass("usw-querytermselect");
 
             $("<select/>")                
-                .css({ width: "100%"})                
+                .css({ width: "100%", "background-color": "ButtonFace" })
                 .change(function() {
                     $(self.option("value", $(this).val()));
                 })                
@@ -120,7 +120,7 @@ History
                 var count = item.counter ? item.counter.value : 0;
                
                 var s = label.length > 50 ? label.substring(0, 50) + "..." : label; // only display first 50 characters - prevent wide dropdown box
-                $(selectElement).append("<option title='" + label + "' value='" + uri + "'>" + s + (count > 0 ? " [" + count + "]":"") + "</option>");
+                $(selectElement).append("<option class='aat' title='" + label + "' value='" + uri + "'>" + s + (count > 0 ? " [" + count + "]":"") + "</option>");
             });
             $(self.option("value",  $(selectElement).val()));
         }       

@@ -69,9 +69,7 @@ History : 21/01/2016 CFB Initially created script
 			if (value !== "") {
 			    q += " ?" + varname + " <" + usw.uri.CRM.P1 + "> [<" + usw.uri.RDFS.LABEL + "> '" + value + "'] .\n";			    	    
 			}			
-			
-			
-			
+					
 			// object-note
 			ctl = $(".usw-dendro-object-note:first", self.content);
 			value = ctl.textinputfield("option", "showcontent") === true ? ctl.textinputfield("option", "value").trim() : "";
@@ -89,8 +87,13 @@ History : 21/01/2016 CFB Initially created script
 			    var valueMax = parseInt(ctl.yearspanselect("option", "valueMax"));
 			    //yearMax = (yearMax < 0 ? "-" : "") + ("0000" + Math.abs(yearMax).toString()).slice(-4);
 			    q += " ?" + varname + "production <" + usw.uri.CRM.P108 + "> ?" + varname + "; <" + usw.uri.CRM.P4 + "> [<" + usw.uri.CRM.P82a + "> ?yearMin ; <" + usw.uri.CRM.P82b + "> ?yearMax ] .\n";
-			    q += "BIND(year(?yearMin) as ?y1) .\nBIND(year(?yearMax) as ?y2) .\n";
-			    q += " FILTER(?y1 >= " + valueMin.toString() + " && ?y2 <= " + valueMax.toString() + ") .\n";
+			    
+			    // 21/01/2017 CFB year filter clause was not working on deployment server. This alternative syntax does
+			    //q += "BIND(year(?yearMin) as ?y1) .\nBIND(year(?yearMax) as ?y2) .\n";
+			    //q += " FILTER(?y1 >= " + valueMin.toString() + " && ?y2 <= " + valueMax.toString() + ") .\n";
+			    //q += " FILTER (?yearMin >= '" + valueMin.toString() + "-01-01T00:00:00Z'^^xsd:gYear && ?yearMax <= '" + valueMax.toString() + "-01-01T00:00:00Z'^^xsd:gYear) .";
+			    //q += " FILTER (year(xsd:DateTime(?yearMin)) >= " + valueMin.toString() + " && year(xsd:DateTime(?yearMax)) <= " + valueMax.toString() + ") .";
+			    q += " FILTER (year(coalesce(xsd:DateTime(?yearMin), xsd:DateTime('5000'))) >= " + valueMin.toString() + " && year(coalesce(xsd:DateTime(?yearMin), xsd:DateTime('5000'))) <= " + valueMax.toString() + ") .";
 			}
 
 		    // object-type 

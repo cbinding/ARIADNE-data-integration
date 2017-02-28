@@ -68,7 +68,6 @@
     <Content Include="src\build.bat" />
     <Content Include="src\favicon.ico" />
     <Content Include="src\fn.gethashcode.js" />
-    <Content Include="help.html" />
     <Content Include="src\jquery.blockUI.js" />
     <Content Include="src\usw.objecttypeslist.js" />
     <Content Include="src\usw.resourceproperties.js" />

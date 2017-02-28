@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic Page Needs -->
+    <meta charset="utf-8">
+    <title>ARIADNE data integration case study</title>
+    <meta name="description" content="Demonstrator for data integration case study">
+    <meta name="author" content="Ceri Binding, University of South Wales, ceri.binding@southwales.ac.uk">
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon -->
+    <link rel="Shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/dendro.css">   
+	
+	<style type="text/css">
+	.content > figure img {
+		width: 90%;
+		border: 1px solid lightgray;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 1em;
+		margin-bottom: 1em;
+		display: block;
+	}
+	.content > figure figcaption {
+		text-align: center;
+		font-weight: bold;
+	}
+	</style>
+</head>
+<body>
+
+    <div class="container"><!-- div.container is main centered wrapper -->
+
+		<section class="header"><!--start section.header-->
+		<a target="_blank" href="http://www.ariadne-infrastructure.eu/"><img src="img/ariadne-logo-350x87.png" alt="ARIADNE"></a>
+		</section><!--end section.header-->
+		
+		<section class="content"><!--start section.content-->		
+		<h4>Demonstrator for data integration case study</h4>
+		<p>
+		The <a href="http://ariadne-lod.isti.cnr.it/demonstrator.html">demonstrator</a> is a <a target="_blank" href="https://www.w3.org/TR/sparql11-overview/">SPARQL 1.1</a> query builder, which forms part of an exploratory investigation of the semantic integration of extracts from archaeological datasets with information extracted via Natural Language Processing (NLP) across different languages. The case study is based on a loose theme of archaeological interest in wooden objects and their dating via dendrochronological techniques. The work was undertaken by the <a target="_blank" href="http://hypermedia.research.southwales.ac.uk">University of South Wales</a> on the technical side, in collaboration with <a target="_blank" href="https://dans.knaw.nl/en">Data Archiving and Networked Services (DANS)</a> and the <a target="_blank" href="https://snd.gu.se/en">Swedish National Data Service (SND)</a> as regards Dutch and Swedish archaeological datasets, reports and vocabularies. The work formed part of the EU FP7 Infrastructures project, <a target="_blank" href="http://www.ariadne-infrastructure.eu">ARIADNE</a> (Advanced Research Infrastructure for Archaeological Dataset Networking in Europe).
+		</p>
+		<p>
+		The case study investigated the feasibility of semantic interoperability between archaeological datasets and data derived from applying NLP information extraction techniques to grey literature reports in different languages. It has a broad theme relating to wooden material including shipwrecks, with a focus on indications of types of wooden material, samples taken, wooden objects with dating from dendrochronological analysis, etc. The resources comprise extracts from 5 English and Dutch language datasets together with grey literature archaeological reports from the Netherlands, Sweden and UK. <a target="_blank" href="http://archaeologydataservice.ac.uk/">Archaeology Data Service (ADS)</a> datasets include two shipwreck datasets - the <a target="_blank" href="http://dx.doi.org/10.5284/1020898">Newport Medieval Ship</a> and the <a target="_blank" href="http://dx.doi.org/10.5284/1011899">Mystery Wreck Project (Flower of Ugie)</a>, together with the <a target="_blank" href="http://www.vag.org.uk/">Vernacular Architecture Group</a> <a target="_blank" href="http://dx.doi.org/10.5284/1039454">dendrochronology</a> and <a target="_blank" href="http://dx.doi.org/10.5284/1031497">cruck</a> databases. DANS facilitated an extract from the database of the international <a target="_blank" href="http://dendro.dans.knaw.nl">Digital Collaboratory for Cultural Dendrochronology (DCCD)</a>. The data are extracts from these databases provided for demonstration purposes and should not be regarded as current or complete.
+		</p>
+		<p>
+		The semantic framework combines the <a target="_blank" href="http://www.cidoc-crm.org/">CIDOC Conceptual Reference Model (CRM)</a> with the <a target="_blank" href="http://www.getty.edu/research/tools/vocabularies/aat/">Getty Art &amp; Architecture Thesaurus (AAT)</a>. The demonstrator is a Web application that hides the complexity of the underlying semantic framework; it seeks to show that alternative user interfaces are possible for RDF applications. As the user selects from the interface, an underlying SPARQL query is automatically constructed in terms of the corresponding ontological entities. It is possible to search across all datasets (the default) or select a dataset to search individually. A set of interactive controls offer search and browsing of the extracted archaeological data. The controls are designed to be browser agnostic and the Demonstrator will run in most modern internet browsers.
+		</p>
+		<p>
+		The demonstrator can perform semantically structured queries, free-text queries, or a combination of both. Drop-down lists of all datasets, AAT materials and AAT object types used in the data are populated at startup, and a dual slider control is initialized to represent the minimum and maximum years for any object production dates present in the data. Hierarchical expansion has been implemented over the semantic structure of the Getty AAT and results from narrower concepts are included when available.
+		</p>
+		<p>
+		The NLP focus is on concepts relevant to the theme, such as samples, materials, objects and temporal information. The NLP output from the English, Dutch and Swedish reports was transformed to the same RDF format as the instance data extracted and mapped to the CRM/AAT. NLP derived RDF statements do not necessarily carry the same degree of reliability as those derived from the datasets (the Dutch and Swedish NLP pipelines are at a prototype stage). The NLP outcomes include some false positives. 
+		</p>
+		<p>The demonstrator is available at <a href="http://ariadne-lod.isti.cnr.it/demonstrator.html">http://ariadne-lod.isti.cnr.it/demonstrator.html</a></p>
+		<p>
+		The Demonstrator <a target="_blank" href="https://github.com/cbinding/ARIADNE-data-integration">source code</a> is available (open source). For more information on the case study and the techniques involved, see ARIADNE D15.3 (Report on Semantic Annotation and Linking) and for a discussion of the NLP techniques see ARIADNE D16.4 (Second Report on Natural Language Processing). Both Deliverables are available at <a href="http://www.ariadne-infrastructure.eu/Resources">http://www.ariadne-infrastructure.eu/Resources</a>
+		</p>
+		<h4>Example Queries</h4> <!--(some in ppt and in D15.3)-->			
+		<figure>
+			<img src="img/querybuilder-record-refers-to-salix.png" alt="Query Builder - records referring to material 'Salix'">
+			<!--<figcaption>Figure 1: Query Builder - records referring to material 'Salix'</figcaption>-->
+		</figure>			
+		<p>
+		Query on records referring to AAT concept &quot;<a target="_blank" href="http://vocab.getty.edu/aat/300375384">Salix (genus)</a>&quot; with multilingual results from databases and reports. Some results refer to &quot;<a target="_blank" href="http://vocab.getty.edu/aat/300012498">willow</a>&quot; (the wood from trees of genus Salix) leveraging query expansion across relevant AAT semantic relationships).
+		</p>
+		<figure>
+			<img src="img/querybuilder-roofs-1500-1600.png" alt="Query Builder - roofs built between 1500-1600 AD">
+			<!--<figcaption>Figure 2: Query Builder - roofs built between 1500-1600 AD</figcaption>-->
+		</figure>
+		<p>
+		Query on objects of type &quot;<a target="_blank" href="http://vocab.getty.edu/aat/300002098">roofs</a>&quot; with a production date in the range 1500 to 1600 AD. Results derive from reports via NLP including some instances where the process has associated an object with a date (or a date range). 			
+		</p>			
+		<figure>
+			<img src="img/sample-of-keels.png" alt="Query Builder - samples of keels">
+			<!--<figcaption>Figure 3: Query Builder - samples of keels</figcaption>-->
+		</figure>
+		<p>
+		Query on samples of objects of type &quot;<a target="_blank" href="http://vocab.getty.edu/aat/300263190">keels</a>&quot; made of material &quot;<a target="_blank" href="http://vocab.getty.edu/aat/300343877">Fagus (genus)</a>&quot;
+		</p>
+		
+		</section><!--end section.content-->
+		
+		<section class="footer"><!--start section.footer-->            
+			<small>
+				<a target="_blank" href="http://hypermedia.research.southwales.ac.uk/">University of South Wales - Hypermedia Research Group</a><br />
+				<a target="_blank" href="http://www.ariadne-infrastructure.eu/">ARIADNE</a> is funded by the <a target="_blank" href="http://ec.europa.eu/research/fp7/index_en.cfm">European Commission's 7th Framework Programme</a>
+			</small>
+		</section><!--end section.footer-->
+		
+	</div><!-- end div.container -->
+
+</body>
+</html>
