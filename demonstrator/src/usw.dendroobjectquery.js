@@ -93,7 +93,7 @@ History : 21/01/2016 CFB Initially created script
 			    //q += " FILTER(?y1 >= " + valueMin.toString() + " && ?y2 <= " + valueMax.toString() + ") .\n";
 			    //q += " FILTER (?yearMin >= '" + valueMin.toString() + "-01-01T00:00:00Z'^^xsd:gYear && ?yearMax <= '" + valueMax.toString() + "-01-01T00:00:00Z'^^xsd:gYear) .";
 			    //q += " FILTER (year(xsd:DateTime(?yearMin)) >= " + valueMin.toString() + " && year(xsd:DateTime(?yearMax)) <= " + valueMax.toString() + ") .";
-			    q += " FILTER (year(coalesce(xsd:DateTime(?yearMin), xsd:DateTime('5000'))) >= " + valueMin.toString() + " && year(coalesce(xsd:DateTime(?yearMin), xsd:DateTime('5000'))) <= " + valueMax.toString() + ") .";
+			    q += " FILTER (year(coalesce(xsd:DateTime(?yearMin), xsd:DateTime('5000'))) >= " + valueMin.toString() + " && year(coalesce(xsd:DateTime(?yearMax), xsd:DateTime('5000'))) <= " + valueMax.toString() + ") .";
 			}
 
 		    // object-type 
@@ -101,7 +101,7 @@ History : 21/01/2016 CFB Initially created script
 		    //value = ctl.querytermselect("option", "showcontent") === true ? ctl.querytermselect("option", "value").trim() : "";
 			value = ctl.dendroobjecttype("option", "showcontent") === true ? (ctl.dendroobjecttype("option", "value") || "").trim() : "";
 			if (value !== "") {
-			    q += " ?" + varname + " crm:P2_has_type/gvp:broaderGeneric? <" + value + "> .\n";
+			    q += " ?" + varname + " crm:P2_has_type/gvp:broaderGeneric* <" + value + "> .\n";
 			}
 		    
 		    //object-material (expanded)

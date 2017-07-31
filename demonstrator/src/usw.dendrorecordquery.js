@@ -107,14 +107,14 @@ History : 21/01/2016 CFB Initially created script
                 //q += "BIND(year(?yearMin) as ?y1) .\nBIND(year(?yearMax) as ?y2) .\n";
                 //q += " FILTER(?y1 >= " + valueMin.toString() + " && ?y2 <= " + valueMax.toString() + ") .\n";
                 //q += " FILTER (?yearMin >= '" + valueMin.toString() + "-01-01T00:00:00Z'^^xsd:gYear && ?yearMax <= '" + valueMax.toString() + "-01-01T00:00:00Z'^^xsd:gYear) .";
-                q += " FILTER (year(coalesce(xsd:DateTime(?yearMin), xsd:DateTime('5000'))) >= " + valueMin.toString() + " && year(coalesce(xsd:DateTime(?yearMin), xsd:DateTime('5000'))) <= " + valueMax.toString() + ") .";               
+                q += " FILTER (year(coalesce(xsd:DateTime(?yearMin), xsd:DateTime('5000'))) >= " + valueMin.toString() + " && year(coalesce(xsd:DateTime(?yearMax), xsd:DateTime('5000'))) <= " + valueMax.toString() + ") .";               
             }
 
             // record-refers-to-material
             ctl = $(".usw-dendro-record-material:first", self.content);
             value = ctl.dendroobjectmaterial("option", "showcontent") === true ? ctl.dendroobjectmaterial("option", "value").trim() : "";
             if (value !== "") {
-                q += " ?" + varname + " crm:P67_refers_to/gvp:broaderGeneric?/(gvp:aat2842_source_for|gvp:aat2841_derived-made_from)? <" + value + "> .\n";
+                q += " ?" + varname + " crm:P67_refers_to/gvp:broaderGeneric*/(gvp:aat2842_source_for|gvp:aat2841_derived-made_from)? <" + value + "> .\n";
             }
 
             // record-object
